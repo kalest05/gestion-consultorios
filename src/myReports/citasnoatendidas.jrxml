@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="citasnoatendidas" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Rep"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+  Ci.fecha,
+  P.nombre + ' ' + P.app AS paciente,
+  M.nombre + ' ' + M.app AS medico,
+  Ci.Estado
+FROM Citas Ci
+LEFT JOIN Consultas C ON Ci.idCita = C.idCita
+JOIN Pacientes P ON Ci.idPaciente = P.idPaciente
+JOIN Medicos M ON Ci.idMedico = M.idMedico
+WHERE C.idConsulta IS NULL AND Ci.fecha <= DATEADD(DAY, 7, GETDATE())
+ORDER BY Ci.fecha DESC]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+	</field>
+	<field name="paciente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="paciente"/>
+		<property name="com.jaspersoft.studio.field.label" value="paciente"/>
+	</field>
+	<field name="medico" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="medico"/>
+		<property name="com.jaspersoft.studio.field.label" value="medico"/>
+	</field>
+	<field name="Estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="Estado"/>
+		<property name="com.jaspersoft.studio.field.label" value="Estado"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<image onErrorType="Blank">
+				<reportElement x="80" y="0" width="164" height="126" uuid="1c003177-754c-448f-8ce1-16868856f545"/>
+				<imageExpression><![CDATA["src/imagenes/hosp1.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="303" y="10" width="263" height="62" uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Citas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="302" y="80" width="196" height="22" uuid="f6a78448-8260-4445-a9e0-e3fb53b080d9"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Hospital Angostura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="66" width="310" height="42" uuid="8240065e-64b6-4170-b5d9-6341598e7b35">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Reporte semanal de Citas no atendidas (sin consulta registrada)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="802" height="1" uuid="e9d2002a-c8ee-4649-a258-640dad29110c"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="0" width="110" height="15" forecolor="#736343" uuid="fd603df8-bbd6-46d2-afcd-67d5bdd99208">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="58e68159-2160-40a2-b5f8-2eed39297a1b"/>
+				</reportElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="150" y="0" width="250" height="15" forecolor="#736343" uuid="535e1298-8087-4ad7-9b98-f221561ca890">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0fada3d4-aaa8-4180-b508-7b5d3f642041"/>
+				</reportElement>
+				<text><![CDATA[Nombre del Paciente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="350" y="0" width="250" height="15" forecolor="#736343" uuid="e1dcee8a-6fda-4af8-a8de-96a0e2b85f6c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ffd3a6fb-e1d5-4114-aa18-65f75f148f08"/>
+				</reportElement>
+				<text><![CDATA[Nombre del Médico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="566" y="0" width="234" height="15" forecolor="#736343" uuid="c94d6442-d6b3-4954-8480-068166140631">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="265dbe44-43a8-41be-ac75-f72355222a06"/>
+				</reportElement>
+				<text><![CDATA[Estado de la Cita]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="802" height="15" uuid="fa7cec56-4ec1-48e6-a26e-7266a995d174"/>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Detail" x="0" y="0" width="150" height="15" uuid="acfa2912-e809-4c81-aea6-b212bcb683c9">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="58e68159-2160-40a2-b5f8-2eed39297a1b"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Detail" x="160" y="0" width="190" height="15" uuid="2cae562a-2eef-47d0-912f-0c2b4c395bb3">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0fada3d4-aaa8-4180-b508-7b5d3f642041"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{paciente}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Detail" x="360" y="0" width="190" height="15" uuid="42d17ccb-b345-4e5c-b931-3fe2988cb257">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ffd3a6fb-e1d5-4114-aa18-65f75f148f08"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{medico}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Detail" x="566" y="0" width="234" height="15" backcolor="#FFFFFF" uuid="889003c9-0ffe-4a8a-8047-90b20a345af0">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="265dbe44-43a8-41be-ac75-f72355222a06"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{Estado}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1" uuid="fa5e88d5-a011-4e32-8f12-ce923f903111"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="843" height="24" forecolor="#D0B48E" backcolor="#F2EBDF" uuid="5d8169bd-4a75-48c8-8a68-6d3ad5ba9402"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="783" y="1" width="40" height="20" forecolor="#736343" uuid="e5e27efa-b599-499b-9ca3-848cb511cb7b"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="703" y="1" width="80" height="20" forecolor="#736343" uuid="18cfe1ca-f7d6-48b0-9827-28578b42a5e0"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343" uuid="fbce24bb-3cb1-44a3-8eec-8c067ddbe5b5"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

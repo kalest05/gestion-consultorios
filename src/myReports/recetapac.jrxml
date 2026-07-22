@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RecetaPaciente" pageWidth="595" pageHeight="600" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e5b1b99e-964b-4f1f-bb3d-ecb0b58d09c3">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Rep"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+          pac.nombre + ' ' + pac.app + ' ' + pac.apm AS Paciente, 
+          med.nombre + ' ' + med.app + ' ' + med.apm AS Medico, 
+          c.fecha, 
+          c.diagnostico, 
+          c.instruccion, 
+          rm.cantidad, 
+          m.nombre AS Medicamento,
+          co.presion,
+          co.temp,
+          co.altura,
+          co.peso
+        FROM Recetas c
+        INNER JOIN RecetaMedicamentos rm ON rm.idReceta = c.idReceta
+        INNER JOIN Medicamentos m ON rm.idMedicamento = m.idMedicamento
+        INNER JOIN Consultas co ON c.idConsulta = co.idConsulta
+        INNER JOIN Citas ci ON co.idCita = ci.idCita
+        INNER JOIN Medicos med ON ci.idMedico = med.idMedico
+        INNER JOIN Pacientes pac ON ci.idPaciente = pac.idPaciente
+        WHERE pac.idPaciente = 1]]>
+	</queryString>
+	<field name="Paciente" class="java.lang.String"/>
+	<field name="Medico" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="diagnostico" class="java.lang.String"/>
+	<field name="instruccion" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="Medicamento" class="java.lang.String"/>
+	<group name="Receta">
+		<groupExpression><![CDATA[$F{Paciente} + $F{fecha}]]></groupExpression>
+		<groupHeader>
+			<band height="90">
+				<textField textAdjust="StretchHeight">
+					<reportElement x="0" y="0" width="555" height="50" uuid="2f417f8b-8bc2-48bd-96af-b9e7a23f1690"/>
+					<textFieldExpression><![CDATA["Diagnóstico: " + $F{diagnostico}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement x="0" y="50" width="555" height="40" uuid="b10ea313-8577-468d-84fb-40eb6e443f3f"/>
+					<textFieldExpression><![CDATA["Instrucciones: " + $F{instruccion}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<title>
+		<band height="100">
+			<image isLazy="true" onErrorType="Blank">
+				<reportElement x="20" y="0" width="70" height="50" uuid="740a375d-6644-4b99-8aba-2c0fd81d942c"/>
+				<imageExpression><![CDATA["src/imagenes/hosp1.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="90" y="10" width="330" height="30" uuid="8c9d76a4-5bf7-4fa1-b9f9-6e77a9505ba0"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECETA MÉDICA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="70">
+			<textField>
+				<reportElement x="0" y="0" width="380" height="20" uuid="4bfaf2b1-3892-4bb9-8619-47b1b4acc748"/>
+				<textFieldExpression><![CDATA["Paciente: " + $F{Paciente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="380" height="20" uuid="d03cb3b7-9e20-4d52-883d-618704975d46"/>
+				<textFieldExpression><![CDATA["Médico: " + $F{Medico}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="40" width="380" height="20" uuid="0eaffc6a-fd6f-4c6a-9b64-0f712483b662"/>
+				<textFieldExpression><![CDATA["Fecha: " + new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{fecha})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="30">
+			<textField>
+				<reportElement x="0" y="0" width="400" height="30" uuid="345a9435-4ed9-4fa2-bf0e-bed1c8371538"/>
+				<textFieldExpression><![CDATA["Medicamentos: " + $F{Medicamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="0" width="135" height="30" uuid="08aadcdb-150a-4444-86fa-3887b9adf3d6"/>
+				<textFieldExpression><![CDATA["Cantidad: " + $F{cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="0" y="10" width="300" height="20" uuid="edde9392-6eff-4811-a9ff-0535da2ba194"/>
+				<text><![CDATA[Firma del médico: ___________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="300" height="20" uuid="94901623-2bf2-4991-9cf3-2f17d4a314b1"/>
+				<text><![CDATA[Lugar de expedición: Angostura, Sinaloa]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>
